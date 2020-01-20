@@ -18,7 +18,7 @@ This script is designed to be deployed as a Group Policy Startup Script.
 
 Policy: Computer Configuration > Policies > Windows Settings > Scripts (Startup/Shutdown)\
 Script Name: Disable-PSv2.ps1\
-Parameters: -ExecutionPolicy Bypass -NonInteractive -NoProfile\
+Parameters: -ExecutionPolicy Bypass -NonInteractive -NoProfile
 
 Author - Rob Willis
 Blog post - http://robwillis.info/2020/01/disabling-powershell-v2-with-group-policy/
