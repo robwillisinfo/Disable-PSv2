@@ -1,5 +1,5 @@
 # Disable-PSv2
-Disable PowerShell v2 with Group Policy
+Disabling PowerShell v2 with Group Policy
 
 This script will disable the PowerShell v2 Engine on Windows 10/Server 2012/16/19, if any other version is detected no changes are made.
 
