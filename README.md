@@ -20,7 +20,7 @@ Policy: Computer Configuration > Policies > Windows Settings > Scripts (Startup/
 Script Name: Disable-PSv2.ps1\
 Parameters: -ExecutionPolicy Bypass -NonInteractive -NoProfile
 
-Author - Rob Willis
+Author - Rob Willis\
 Blog post - http://robwillis.info/2020/01/disabling-powershell-v2-with-group-policy/
 
 Example usage:
