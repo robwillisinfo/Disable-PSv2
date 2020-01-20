@@ -17,9 +17,7 @@ Script log data saved to: C:\Windows\Logs\Disable-PSv2-Log.txt
 This script is designed to be deployed as a Group Policy Startup Script.
 
 Policy: Computer Configuration > Policies > Windows Settings > Scripts (Startup/Shutdown)
-
 Script Name: Disable-PSv2.ps1
-
 Parameters: -ExecutionPolicy Bypass -NonInteractive -NoProfile
 
 Author - Rob Willis
