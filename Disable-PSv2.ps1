@@ -30,6 +30,15 @@ Blog post - http://robwillis.info/2020/01/disabling-powershell-v2-with-group-pol
 
 C:\PS> powershell.exe -ExecutionPolicy Bypass -NoProfile -NonInteractive -WindowsStyle Hidden .\Disable-PSv2.ps1
 
+2022MAR10 -einz13-
+Fixed some bracketing, and added the fuctionality to also disable the root v2 feature for Powershell. This is a SCAP requirement from DISA.
+
+Changes to Script flow:
+- Check the current OS version.
+    - If Windows 10/Server 12/16/19, PowerShell v2 & Powershell v2 Root will be disabled.
+        - If PowerShell v2 is already disabled, no changes will be made.
+        - If PowerShell v2 Root is already disabled, no changes will be made.
+    - Any other OS, no changes will be made.
 #>
 
 # Start logging
@@ -44,6 +53,7 @@ switch -regex ($OSVersion) {
         Write-Host "Windows 10/Server 2012/16/19 detected."
         Write-Host "Checking to see if PowerShell v2 is currently enabled..."
         $PSv2PreCheck = dism.exe /Online /Get-Featureinfo /FeatureName:"MicrosoftWindowsPowerShellv2" | findstr "State"
+        $PSv2RootPreCheck = dism.exe /Online /Get-Featureinfo /FeatureName:"MicrosoftWindowsPowerShellv2Root" | findstr "State"
         If ( $PSv2PreCheck -like "State : Enabled" ) {
             Write-Host "PowerShell v2 appears to be enabled, disabling via dism..." 
             dism.exe /Online /Disable-Feature /FeatureName:"MicrosoftWindowsPowerShellv2" /NoRestart
@@ -53,10 +63,21 @@ switch -regex ($OSVersion) {
             } Else {
                 Write-Host "PowerShell v2 disabled successfully."
             }
-        } Else {
+		}
+        ElseIf ( $PSv2RootPreCheck -like "State : Enabled" ) {
+            Write-Host "PowerShell v2 appears to be enabled, disabling via dism..." 
+            dism.exe /Online /Disable-Feature /FeatureName:"MicrosoftWindowsPowerShellv2Root" /NoRestart
+            $PSv2RootPostCheck = dism.exe /Online /Get-Featureinfo /FeatureName:"MicrosoftWindowsPowerShellv2Root" | findstr "State"
+            If ( $PSv2RootPostCheck -like "State : Enabled" ) {
+                Write-Host "PowerShell v2 root still seems to be enabled, check the log for errors: $DefaultLogLocation"
+            } Else {
+                Write-Host "PowerShell v2 root disabled successfully."
+            }
+		}
+         Else {
             Write-Host "PowerShell v2 is already disabled, no changes will be made."
         }
-    }   
+	}
     "(?i)7|Vista|2008" {
         Write-Host "Detected Windows 7/Vista/Server 2008, no changes will be made."
     }
